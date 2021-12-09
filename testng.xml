@@ -11,6 +11,5 @@
             <classes>
                 <class name="com.jiofabric.testCases.UnitTestCases" />
             </classes>
-
     </test>
 </suite>
