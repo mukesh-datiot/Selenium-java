@@ -17,7 +17,10 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+//import org.testng.annotations;
+import org.testng.Reporter;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 
 import java.io.FileInputStream;
 import java.util.*;
@@ -34,6 +37,9 @@ public class UnitTestCases {
         options.setBinary("\"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\"");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+//        driver = new ChromeDriver();
+//        driver.get("http://localhost:3000/");
+//        driver.manage().window().maximize();
     }
 
     @BeforeMethod
@@ -51,11 +57,13 @@ public class UnitTestCases {
     @After
     @AfterTest
     public static void afterClassSetup() {
+       // driver.close();
     }
 
 
 //    @Test
 //    public void a_addUnit() throws Exception {
+//        SoftAssert softAssert = new SoftAssert();
 //        WebDriverWait wait = new WebDriverWait(driver, 200);
 //        String name = "";
 //        String unit = "";
@@ -110,22 +118,26 @@ public class UnitTestCases {
 //            Thread.sleep(100);
 //            WebElement createMessageOnAddUnit = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("swal2-title")));
 //            System.out.println(createMessageOnAddUnit.getText());
-//            Assert.assertEquals("Meta data saved successfully", createMessageOnAddUnit.getText());
+//            softAssert.assertEquals("Meta data saved successfully", createMessageOnAddUnit.getText());
+//           // Assert.assertEquals("Meta data saved successfully", createMessageOnAddUnit.getText());
 //            //    Assert.assertFalse("The unitName enter is not correct", driver.findElement(By.xpath("//*[text()='" + name + "']")).getText().equals(name));
 //
 //            //   closePath();
-//            // Thread.sleep(500);
+//             Thread.sleep(1000);
 //        }
+//
+//       // softAssert.assertAll();
 //    }
+
 
     @Test
     public void a_addUnit() throws Exception {
-
+        SoftAssert softAssert = new SoftAssert();
         FileInputStream ip = new FileInputStream("D:\\jiofabric\\Selenium-java\\src\\main\\resources\\unit.xlsx");
-
         Workbook wb = WorkbookFactory.create(ip);
         List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
         try {
+
             dataList = read(wb, "Main");
             ip.close();
             for (Map<String, String> dataMap : dataList) {
@@ -134,11 +146,15 @@ public class UnitTestCases {
 
         } catch (Exception e) {
             System.out.println("ERROR: " + e.toString());
+//            WebElement createMessageOnAddUnit = driver.findElement(By.id("swal2-title"));
+//            System.out.println(createMessageOnAddUnit.getText());
+//            Assert.assertEquals("Meta data saved successfully", createMessageOnAddUnit.getText());
         }
-
     }
 
+
         public static void addUnit(Map<String, String> dataMap)  {
+        SoftAssert softAssert = new SoftAssert();
             try {
                 WebDriverWait wait = new WebDriverWait(driver, 50);
                 String name = "";
@@ -163,7 +179,7 @@ public class UnitTestCases {
                     }
                 }
 
-
+                Reporter.log("Test case start for " + selectedField);
                 WebElement addUnitButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class='btn btn-primary']")));
                 addUnitButton.click();
                 Thread.sleep(100);
@@ -184,20 +200,25 @@ public class UnitTestCases {
                // Thread.sleep(100);
                 WebElement createMessageOnAddUnit = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("swal2-title")));
                 System.out.println(createMessageOnAddUnit.getText());
-                Assert.assertEquals("Meta data saved successfully", createMessageOnAddUnit.getText());
+                Assert.assertEquals(createMessageOnAddUnit.getText(), "Meta data saved successfully");
+                Reporter.log("Test case ends for " + selectedField);
                 //    Assert.assertFalse("The unitName enter is not correct", driver.findElement(By.xpath("//*[text()='" + name + "']")).getText().equals(name));
 
                 //   closePath();
-                 Thread.sleep(2000);
+                 Thread.sleep(4000);
 
-            } catch (Exception e) {
+
+            } catch (Throwable e) {
                 System.out.println("Error Creating Unit " + dataMap.get("selectedField"));
                 System.out.println("Error Creating Unit " + e.toString());
+//                WebElement createMessageOnAddUnit = driver.findElement(By.id("swal2-title"));
+//                System.out.println(createMessageOnAddUnit.getText());
+//                softAssert.assertEquals("Meta data saved successfully", createMessageOnAddUnit.getText());
             }
 
         }
 
-        @Test(enabled=false)
+        @Test
         public void b_editUnit() throws Exception {
             String name = "";
             String updatedUnitName = "";
